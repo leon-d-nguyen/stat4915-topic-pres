@@ -1,29 +1,90 @@
 ---
-title: "Habits"
-author: "John Doe"
-format: beamer
+title: "Data Science Project Pipeline"
+author: "Leon Nguyen"
+format: 
+    revealjs:
+        theme: serif
+        transition: fade
+        transition-speed: fast
 ---
 
-# In the morning
+## Table of Contents
 
-## Getting up
+1. What is the Data Science Pipeline?
+1. Research Question
+1. Data Collection
+1. Data Cleaning
+1. Data Visualization
+1. Data Modeling
+1. Data Storytelling
 
-- Turn off alarm
-- Get out of bed
 
-## Breakfast
 
-- Eat eggs
-- Drink coffee
+# What is the Data Science Pipeline?
 
-# In the evening
+## Slide 1
 
-## Dinner
++ Thing 1
++ Thing 2
 
-- Eat spaghetti
-- Drink wine
 
-## Going to sleep
+# Research Question
 
-- Get in bed
-- Count sheep
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+# Data Collection
+
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+# Data Cleaning
+
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+# Data Visualization
+
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+# Data Modeling
+
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+# Data Storytelling
+
+## Slide 1
+
++ Thing 1
++ Thing 2
+
+
+## Conclusion
+
+
+
+## References
+
++ https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​
++ https://www.simplilearn.com/what-is-data-collection-article​
++ https://www.simplilearn.com/data-collection-methods-article​
++ https://www.entrepreneur.com/science-technology/be-careful-of-data-that-can-cause-bad-insights/251905​
++ https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​
++ https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/
