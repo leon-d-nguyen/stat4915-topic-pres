@@ -9,7 +9,6 @@ format:
         smaller: true
         scrollable: true
         fig-cap-location: bottom
-        
 ---
 
 
@@ -212,3 +211,4 @@ Having a clear framework in place can guide you to make decisions that drive you
 + DevIQ, [https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science](https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science)
 + [https://www.geeksforgeeks.org/machine-learning-model-evaluation/#](https://www.geeksforgeeks.org/machine-learning-model-evaluation/#)
 + [https://www.statology.org/interpret-roc-curve/](https://www.statology.org/interpret-roc-curve/)
++ [https://towardsdatascience.com/goodharts-law-and-the-dangers-of-metric-selection-with-a-b-testing-91b48d1c1bef/](https://towardsdatascience.com/goodharts-law-and-the-dangers-of-metric-selection-with-a-b-testing-91b48d1c1bef/)
