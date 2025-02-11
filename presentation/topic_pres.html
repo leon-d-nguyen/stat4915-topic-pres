@@ -7,11 +7,14 @@
 <link href="topic_pres_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="topic_pres_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="topic_pres_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="topic_pres_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="topic_pres_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="topic_pres_files/libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="topic_pres_files/libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="topic_pres_files/libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.545">
 
-  <meta name="author" content="John Doe">
-  <title>Habits</title>
+  <meta name="author" content="Leon Nguyen">
+  <title>Data Science Project Pipeline</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -244,6 +247,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -326,58 +330,282 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Habits</h1>
+  <h1 class="title">Data Science Project Pipeline</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-John Doe 
+Leon Nguyen 
 </div>
 </div>
 </div>
 
 </section>
 <section>
-<section id="in-the-morning" class="title-slide slide level1 center">
-<h1>In the morning</h1>
+<section id="what-is-the-data-science-pipeline" class="title-slide slide level1 center">
+<h1>What is the Data Science Pipeline?</h1>
 
 </section>
-<section id="getting-up" class="slide level2">
-<h2>Getting up</h2>
+<section id="what-is-the-data-science-pipeline-1" class="slide level2">
+<h2>What is the Data Science Pipeline?</h2>
 <ul>
-<li>Turn off alarm</li>
-<li>Get out of bed</li>
+<li>Framework for data insights</li>
+<li>Raw data into actionable answers</li>
+<li>Flexible!</li>
+</ul>
+<p><a href="./figures/datasci_pipeline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="./figures/datasci_pipeline.png"></a></p>
+</section>
+<section id="parts-of-the-data-science-pipeline" class="slide level2 scrollable">
+<h2>Parts of the Data Science Pipeline</h2>
+<ol type="1">
+<li><strong>Research Question:</strong> What questions are you trying to get answered?</li>
+<li><strong>Data Collection:</strong> What data is useful for answering your questions?</li>
+<li><strong>Data Cleaning:</strong> How should you process your data?</li>
+<li><strong>Data Visualization:</strong> What can we see about your data?</li>
+<li><strong>Data Modeling:</strong> What models are appropriate for your data?</li>
+<li><strong>Data Storytelling:</strong> What insights can we learn from your data?</li>
+</ol>
+</section></section>
+<section>
+<section id="research-question" class="title-slide slide level1 center">
+<h1>Research Question</h1>
+
+</section>
+<section id="what-guides-your-researchinquiry" class="slide level2">
+<h2>What guides your research/inquiry?</h2>
+<ul>
+<li>Backbone of your project</li>
+<li>“…explore an existing uncertainty in an area of concern and points to a need for deliberate investigation” (Ratan et al, 2019).
+<ul>
+<li>Details the problem statement</li>
+<li>Further describes and refines the issue under study</li>
+<li>Adds focus to the problem statement</li>
+<li>Sets context of research</li>
+<li><strong>Guides data collection and analysis.</strong></li>
+</ul></li>
+<li>What are you curious about?</li>
+</ul>
+<!-- ## In context
+
+![Caption](./figures/image.png){width=80% .lightbox} -->
+</section></section>
+<section>
+<section id="data-collection" class="title-slide slide level1 center">
+<h1>Data Collection</h1>
+
+</section>
+<section id="data-collection-1" class="slide level2">
+<h2>Data Collection</h2>
+<ul>
+<li>Defined as “the process of gathering and analyzing accurate data from various sources to find answers to research problems, trends and probabilities, etc., to evaluate possible outcomes” (Jain, 2024).</li>
+<li>Main objective is to gather information-rich and reliable data, and analyze them to make critical business decisions (Duggal, 2024).
+<ul>
+<li>What types of data sources?</li>
+<li>“Garbage in, garbage out” principle</li>
+<li>Do I have enough data?</li>
+<li>Multiple features</li>
+</ul></li>
 </ul>
 </section>
-<section id="breakfast" class="slide level2">
-<h2>Breakfast</h2>
+<section id="data-sources" class="slide level2">
+<h2>Data Sources</h2>
+<p>Pre-built data sources:</p>
 <ul>
-<li>Eat eggs</li>
-<li>Drink coffee</li>
+<li>Kaggle: <a href="https://www.kaggle.com/datasets">https://www.kaggle.com/datasets</a></li>
+<li>Governmental sites, CDC, Departmental sites, etc.</li>
+<li>OpenData NYC</li>
+<li>GitHub: <a href="https://github.com/awesomedata/awesome-public-datasets">https://github.com/awesomedata/awesome-public-datasets</a></li>
+</ul>
+<p>Web Scraping</p>
+<ul>
+<li>e.g.&nbsp;Webpages with big tables, LinkedIn data</li>
+<li>Takes more time, but more flexible</li>
+<li>BeautifulSoup: <a href="https://www.youtube.com/watch?v=XVv6mJpFOb0">https://www.youtube.com/watch?v=XVv6mJpFOb0</a></li>
 </ul>
 </section></section>
 <section>
-<section id="in-the-evening" class="title-slide slide level1 center">
-<h1>In the evening</h1>
+<section id="data-cleaning" class="title-slide slide level1 center">
+<h1>Data Cleaning</h1>
 
 </section>
-<section id="dinner" class="slide level2">
-<h2>Dinner</h2>
+<section id="what-should-be-cleaned" class="slide level2">
+<h2>What should be cleaned?</h2>
 <ul>
-<li>Eat spaghetti</li>
-<li>Drink wine</li>
+<li>Can you drop irrelevant/empty columns?</li>
+<li>Are there data entries with ambiguous/invalid characters? (e.g.&nbsp;entries in various languages)</li>
+<li>Is data typecasted correctly?</li>
+<li>Are null values coded in different ways? (e.g.&nbsp;“null” vs “NA”)</li>
+<li>Can you conserve space with simpler datatypes? (e.g.&nbsp;encoding strings with integers?)</li>
+<li>Can you standardize values? (e.g.&nbsp;“canada”, “Canada”, and “CANADA”)</li>
+<li>Duplications?</li>
 </ul>
 </section>
-<section id="going-to-sleep" class="slide level2">
-<h2>Going to sleep</h2>
+<section id="what-should-be-cleaned-1" class="slide level2">
+<h2>What should be cleaned?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2" title="A sample messy dataset."><img data-src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg" alt="A sample messy dataset."></a></p>
+<figcaption>A sample messy dataset.</figcaption>
+</figure>
+</div>
+</section>
+<section id="data-cleaning-in-python-pandas" class="slide level2">
+<h2>Data Cleaning in Python: Pandas</h2>
+<p>“Pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool.” <a href="https://pandas.pydata.org/docs/">https://pandas.pydata.org/docs/</a></p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://th.bing.com/th/id/OIP.O7wkuQHWHFETVuJkabKzjgAAAA?rs=1&amp;pid=ImgDetMain"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://th.bing.com/th/id/R.7b48cd34391cfdf9156ed79c9f80e543?rik=JDEpjaWNDdVieg&amp;riu=http%3a%2f%2felelur.com%2fdata_images%2fmammals%2fpanda%2fpanda-04.jpg&amp;ehk=nq%2bhcumOBKM9UDadyxmsLueEx%2fFOBmLYAX5ZfPg9QjY%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0"></p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="data-visualization" class="title-slide slide level1 center">
+<h1>Data Visualization</h1>
+
+</section>
+<section id="types-of-data-visualizations" class="slide level2">
+<h2>Types of Data Visualizations</h2>
+<p>Depending on the context of your data and what insights are useful:</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <ul>
-<li>Get in bed</li>
-<li>Count sheep</li>
+<li>Scatter plot with line of best fit</li>
+<li>Jittering with stripplot</li>
+<li>Marginal Boxplot</li>
+<li>Correlogram</li>
+<li>Pairwise Plot</li>
+<li>Waffle Chart</li>
+<li>Pie Chart</li>
+<li>Treemap</li>
+<li>Bar Chart</li>
+<li><a href="https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/">…and other types!</a></li>
+</ul>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="./figures/NYCplot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3" title="Plot of NYC done with matplotlib, contextily, seaborn"><img data-src="./figures/NYCplot.png" style="width:80.0%" alt="Plot of NYC done with matplotlib, contextily, seaborn"></a></p>
+<figcaption>Plot of NYC done with <code>matplotlib</code>, <code>contextily</code>, <code>seaborn</code></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tools-for-data-visualization" class="slide level2">
+<h2>Tools for Data Visualization</h2>
+<p>Matplotlib, Seaborn, and Plotnine are great packages for data visualization; you can create static, animated, and interactive visualizations!</p>
+<p>Geopandas is great with geographic information.</p>
+<div class="quarto-layout-panel" data-layout="[[1,1], [1,1]]" data-fig-align="center">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://matplotlib.org/3.6.0/_images/sphx_glr_logos2_003_2_0x.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://th.bing.com/th/id/R.307407b158f9dbda1d449ec4039901cc?rik=wYbKwb%2bY6hAVvw&amp;pid=ImgRaw&amp;r=0"></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://www.business-science.io/assets/2020-11-12-python-and-r-visualizing-data/plotnine_logo.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://geopandas.org/en/stable/_images/geopandas_logo.png"></p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="data-modeling" class="title-slide slide level1 center">
+<h1>Data Modeling</h1>
+
+</section>
+<section id="what-is-the-role-of-ai-and-ml-in-data-science" class="slide level2">
+<h2>What is the role of AI and ML in Data Science?</h2>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<ul>
+<li><strong>Artificial Intelligence:</strong> broad concept of developing machines simulating human thinking, reasoning and behavior.</li>
+<li><strong>Machine Learning:</strong> a subset of AI where computer systems learn from the environment to improve experiences and processes.</li>
+<li><strong>Data Science:</strong> a distinct discipline with overlap/application in the fields of AI and ML, but not a subset of either.</li>
+</ul>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="./figures/AI_ML_DS.png"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="what-are-models-used-for" class="slide level2">
+<h2>What are models used for?</h2>
+<p>There are various types of modeling depending on your research questions of interest:</p>
+<ul>
+<li><strong>Predictive Modeling:</strong> Using historical data to predict future outcomes.</li>
+<li><strong>Descriptive Modeling:</strong> Identifying patterns and relationships in data.</li>
+<li><strong>Prescriptive Modeling:</strong> Recommending actions based on data analysis.</li>
+<li><strong>Clustering:</strong> Grouping similar data points together.</li>
+<li><strong>Classification:</strong> Assigning data points to predefined categories.</li>
+<li><strong>Regression:</strong> Predicting a continuous outcome variable based on one or more predictor variables.</li>
+</ul>
+</section>
+<section id="data-evaluation" class="slide level2">
+<h2>Data Evaluation</h2>
+<ul>
+<li><strong>Accuracy:</strong> How often is the model correct?</li>
+<li><strong>Precision:</strong> When it predicts positive, how often is it correct?</li>
+<li><strong>Recall:</strong> When it’s actually positive, how often does it predict positive?</li>
+<li><strong>ROC Curve:</strong> A graphical plot illustrating the diagnostic ability of a binary classifier.</li>
+<li><strong>Cross-Validation:</strong> Technique for assessing how the results of a statistical analysis will generalize to an independent dataset.</li>
+<li>Word of caution: “When a measure becomes a target, it ceases to be a good measure”</li>
+</ul>
+</section></section>
+<section>
+<section id="data-storytelling" class="title-slide slide level1 center">
+<h1>Data Storytelling</h1>
+
+</section>
+<section id="what-now" class="slide level2">
+<h2>What now?</h2>
+<ul>
+<li>How to present and communicate your work</li>
+<li>What does the data support?</li>
+<li>Context and domain knowledge</li>
+<li>What does this mean?</li>
+</ul>
+</section>
+<section id="conclusion" class="slide level2">
+<h2>Conclusion</h2>
+<p>Having a clear framework in place can guide you to make decisions that drive your inquiries, from dirty data to actionable insights!</p>
+<p><a href="./figures/datasci_pipeline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="./figures/datasci_pipeline.png"></a></p>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<ul>
+<li>Ratan, Simmi K. et al.&nbsp;<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/">https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/</a></li>
+<li><a href="https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​">https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​</a></li>
+<li>Jain, Pulkit. <a href="https://www.simplilearn.com/what-is-data-collection-article​">https://www.simplilearn.com/what-is-data-collection-article​</a></li>
+<li>Duggal, Nikita. <a href="https://www.simplilearn.com/data-collection-methods-article​">https://www.simplilearn.com/data-collection-methods-article​</a></li>
+<li><a href="https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​">https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​</a></li>
+<li><a href="https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/">https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/</a></li>
+<li>DevIQ, <a href="https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science">https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science</a></li>
+<li><a href="https://www.geeksforgeeks.org/machine-learning-model-evaluation/#">https://www.geeksforgeeks.org/machine-learning-model-evaluation/#</a></li>
+<li><a href="https://www.statology.org/interpret-roc-curve/">https://www.statology.org/interpret-roc-curve/</a></li>
 </ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
+</div>
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-2">A sample messy dataset.</span>
+<span class="glightbox-desc lightbox-desc-3">Plot of NYC done with <code>matplotlib</code>, <code>contextily</code>, <code>seaborn</code></span>
 </div>
 </section></section>
     </div>
@@ -411,7 +639,7 @@ John Doe
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -536,10 +764,10 @@ John Doe
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
@@ -744,6 +972,31 @@ John Doe
       }
     });
     </script>
+    <script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
+    window.onload = () => {
+      lightboxQuarto.on('slide_before_load', (data) => {
+        const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+        const href = trigger.getAttribute('href');
+        if (href !== null) {
+          const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+          if (imgEl !== null) {
+            const srcAttr = imgEl.getAttribute("src");
+            if (srcAttr && srcAttr.startsWith("data:")) {
+              slideConfig.href = srcAttr;
+            }
+          }
+        } 
+      });
+
+      lightboxQuarto.on('slide_after_load', (data) => {
+        const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(slideNode);
+        }
+      });
+
+    };
+              </script>
     
 
 </body></html>
