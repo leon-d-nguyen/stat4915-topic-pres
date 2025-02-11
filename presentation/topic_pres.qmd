@@ -8,6 +8,8 @@ format:
         transition-speed: fast
         smaller: true
         scrollable: true
+        fig-cap-location: bottom
+        
 ---
 
 
@@ -18,6 +20,8 @@ format:
 + Framework for data insights
 + Raw data into actionable answers
 + Flexible!
+
+![](./figures/datasci_pipeline.png){.lightbox}
 
 ## Parts of the Data Science Pipeline  
 
@@ -89,31 +93,31 @@ Web Scraping
 
 ## What should be cleaned? 
 
-![A sample messy dataset](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg){width=80% .lightbox}
+![A sample messy dataset.](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg){.lightbox}
 
 ## Data Cleaning in Python: Pandas
 
 “Pandas is a fast, powerful, flexible and easy to use open source data analysis 
 and manipulation tool.” [https://pandas.pydata.org/docs/](https://pandas.pydata.org/docs/)
 
+::: {layout-ncol=2 layout-valign="center"}
+
+![](https://th.bing.com/th/id/OIP.O7wkuQHWHFETVuJkabKzjgAAAA?rs=1&pid=ImgDetMain)
+
+![](https://th.bing.com/th/id/R.7b48cd34391cfdf9156ed79c9f80e543?rik=JDEpjaWNDdVieg&riu=http%3a%2f%2felelur.com%2fdata_images%2fmammals%2fpanda%2fpanda-04.jpg&ehk=nq%2bhcumOBKM9UDadyxmsLueEx%2fFOBmLYAX5ZfPg9QjY%3d&risl=&pid=ImgRaw&r=0)
+
+:::
 
 # Data Visualization
-
-## Applications
-
-+ Thing 1
-+ Thing 2
 
 ## Types of Data Visualizations
 
 Depending on the context of your data and what insights are useful:
 
-+ Scatter plot
-+ Bubble plot with Encircling
+::: {layout-ncol=2}
+
 + Scatter plot with line of best fit
 + Jittering with stripplot
-+ Counts Plot
-+ Marginal Histogram
 + Marginal Boxplot
 + Correlogram
 + Pairwise Plot
@@ -121,40 +125,90 @@ Depending on the context of your data and what insights are useful:
 + Pie Chart
 + Treemap
 + Bar Chart
++ [...and other types!](https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/)
 
+![Plot of NYC done with `matplotlib`, `contextily`, `seaborn`](./figures/NYCplot.png){width=80% .lightbox}
 
-[https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/](https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/)
+:::
 
 ## Tools for Data Visualization
 
-Matplotlib, Seaborn, and Plotnine are great packages for data visualization; you can create static, animated, and interactive vvisualizations!
+Matplotlib, Seaborn, and Plotnine are great packages for data visualization; you can create static, animated, and interactive visualizations!
+
+Geopandas is great with geographic information.
+
+::: {layout="[[1,1], [1,1]]" fig-align="center"}
+
+![](https://matplotlib.org/3.6.0/_images/sphx_glr_logos2_003_2_0x.png) 
+
+![](https://th.bing.com/th/id/R.307407b158f9dbda1d449ec4039901cc?rik=wYbKwb%2bY6hAVvw&pid=ImgRaw&r=0)
+
+![](https://www.business-science.io/assets/2020-11-12-python-and-r-visualizing-data/plotnine_logo.png)
+
+![](https://geopandas.org/en/stable/_images/geopandas_logo.png)
+
+:::
 
 
 # Data Modeling
 
 ## What is the role of AI and ML in Data Science?
 
-+ Thing 1
-+ Thing 2
+::: {layout-ncol=2}
 
++ **Artificial Intelligence:** broad concept of developing machines simulating human thinking, reasoning and behavior.
++ **Machine Learning:** a subset of AI where computer systems learn from the environment to improve experiences and processes.
++ **Data Science:** a distinct discipline with overlap/application in the fields of AI and ML, but not a subset of either.
+
+![](./figures/AI_ML_DS.png)
+
+:::
+
+## What are models used for?
+
+There are various types of modeling depending on your research questions of interest:
+
++ **Predictive Modeling:** Using historical data to predict future outcomes.
++ **Descriptive Modeling:** Identifying patterns and relationships in data.
++ **Prescriptive Modeling:** Recommending actions based on data analysis.
++ **Clustering:** Grouping similar data points together.
++ **Classification:** Assigning data points to predefined categories.
++ **Regression:** Predicting a continuous outcome variable based on one or more predictor variables.
+
+## Data Evaluation
+
++ **Accuracy:** How often is the model correct?
++ **Precision:** When it predicts positive, how often is it correct?
++ **Recall:** When it's actually positive, how often does it predict positive?
++ **ROC Curve:** A graphical plot illustrating the diagnostic ability of a binary classifier.
++ **Cross-Validation:** Technique for assessing how the results of a statistical analysis will generalize to an independent dataset.
++ Word of caution: "When a measure becomes a target, it ceases to be a good measure"
 
 # Data Storytelling
 
-## Slide 1  
+## What now?  
 
-+ Thing 1
-+ Thing 2
++ How to present and communicate your work
++ What does the data support?
++ Context and domain knowledge
++ What does this mean?
 
 
 ## Conclusion
 
+Having a clear framework in place can guide you to make decisions that drive your inquiries, from dirty data to actionable insights!
+
+![](./figures/datasci_pipeline.png){.lightbox}
 
 
 ## References  
 
-+ Ratan, Simmi K. et al. https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/ 
-+ https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​
-+ Jain, Pulkit. https://www.simplilearn.com/what-is-data-collection-article​
-+ Duggal, Nikita. https://www.simplilearn.com/data-collection-methods-article​
-+ https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​
-+ https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/
++ Ratan, Simmi K. et al. [https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/](https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/)
++ [https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​](https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​)
++ Jain, Pulkit. [https://www.simplilearn.com/what-is-data-collection-article​](https://www.simplilearn.com/what-is-data-collection-article​)
++ Duggal, Nikita. [https://www.simplilearn.com/data-collection-methods-article​](https://www.simplilearn.com/data-collection-methods-article​)
++ [https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​](https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​)
++ [https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/](https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/)
++ DevIQ, [https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science](https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science)
++ [https://www.geeksforgeeks.org/machine-learning-model-evaluation/#](https://www.geeksforgeeks.org/machine-learning-model-evaluation/#)
++ [https://www.statology.org/interpret-roc-curve/](https://www.statology.org/interpret-roc-curve/)
