@@ -179,9 +179,9 @@ point values and point differences between job $n$ and job $n+1$ are as follows:
 
 ::: {layout-ncol=2 layout-valign="center"}
 
-![](figures/pvdist_min.png)
+![](figures/pvdist_avg.png)
 
-![](figures/pdiffdist_min.png)
+![](figures/pdiffdist_avg.png)
 
 :::
 
