@@ -1,6 +1,6 @@
 ---
-title: "Climbing and Crossing Career Ladders: An Analysis on Job Mobility"
-subtitle: "STAT 4915 Interim Check-In"
+title: "Climbing and Crossing Career Ladders"
+subtitle: "An Analysis on Job Mobility: STAT 4915 Interim Check-In"
 author: "Leon Nguyen"
 format: 
     revealjs:
@@ -13,42 +13,239 @@ format:
 ---
 
 
-# What is the Data Science Pipeline?
+# Overview
+<!-- Remember to render the .qmd, then open .html in live server -->
 
-## What is the Data Science Pipeline?
+## Table of Contents
 
-+ Framework for data insights
-+ Raw data into actionable answers
-+ Flexible!
++ Problem Description 
++ Objectives and Research Questions
++ Data Description
++ Data Preprocessing / Cleaning
++ Response Variable Construction
++ Analysis
++ Further Investigation
 
-![](./figures/datasci_pipeline.png){.lightbox}
+# Problem Description 
 
-## Parts of the Data Science Pipeline  
+## Problem Description 
 
-1. **Research Question:** What questions are you trying to get answered?
-1. **Data Collection:** What data is useful for answering your questions?
-1. **Data Cleaning:** How should you process your data?
-1. **Data Visualization:** What can we see about your data?
-1. **Data Modeling:** What models are appropriate for your data?
-1. **Data Storytelling:** What insights can we learn from your data?
++ Different progressions in career trajectories can aid in understanding disparities
++ Studying job mobility in the United States is critical to understanding patterns that could be indicative of systemic behaviors
++ Pew Research study: during Great Resignation, Black and Hispanic populations were more likely to change jobs compared to White and Asian demographics
++ Younger workers also more likely to change jobs in a given month compared to older demographics (Kochhar et al., 2022)
++ Mainstream focus on how US immigration has embolstered the labor force during and post-pandemic
 
 
-# Research Question
+# Objectives and Research Questions
+## Objectives and Research Questions
 
-## What guides your research/inquiry?  
+Focus on a primary data source analysis to identify patterns or disparities that may exist in the labor market between different demographics within the Indian immigrant subpopulation prior to the COVID-19 pandemic, what factors may contribute to said disparities, as well as identify potential solutions to address them. 
 
-+ Backbone of your project
-+ "...explore an existing uncertainty in an area of concern and points to a need for deliberate investigation" (Ratan et al, 2019).
-    + Details the problem statement
-    + Further describes and refines the issue under study
-    + Adds focus to the problem statement
-    + Sets context of research
-    + **Guides data collection and analysis.**
-+ What are you curious about?
+**Research Questions:**
+
++ Are there significant differences between how people move between jobs versus between companies?
++ Are there significant differences between different demographics of gender, highest education level, and U.S./Foreign Degrees?
++ Do external job changes affect how we define job to job movement? If so, how?
+
+
+# Data Description
+## Data Description
+
++ Primary dataset webscraped from LinkedIn provided by advisor, collected as of early 2019
++ Observations ($n=7,597$) consist of people with a Bachelor's degree from the U.S. or India
++ Publicly available LinkedIn profile with their career progression
++ Most data is discrete or categorical, if numerical then involves monthly increments
++ Some information is truncated or rounded by nature of the dataset
+
+## Features
+
+Roughly $70+$ features, including:
+
++ Job titles
++ Company names
++ Duration of employment 
++ Total years working in US, studying in US
++ Indicators for Master's and/or Doctorate degrees 
++ Country in which the person's degree was received
++ Field of study
++ Number of years since the most recent degree
++ Highest degree available
+
+
+# Data Preprocessing / Cleaning
+
+## General Preliminary Cleaning
+
++ Correcting typos in field of study (BA, MA, and Doctorate)
++ Consolidating fields of study into more narrow categories
++ Consolidating countries (location of degree) into US vs non-US (primarily India)
++ Typecasting
++ Data validation and consistency: e.g. highest degree earned
++ Standardize job industries into categories
+
+## Supplemental Cleaning
+
+Additional variable construction / revision:
+
++ Number of jobs (retroactively, max 10)
++ Is area of study in a STEM field? : '0' for STEM, '1' for non-STEM
++ `Has Advanced Degree` : '0' is encoded for no advanced degree, '1' is encoded for any advanced degree (Master's or Doctorate)
++ `advanced_degree_from_US` : '0' is encoded for no US advanced degree, '1' is encoded for US advanced degree
++ `STEM_advanced_degree` : '0' is encoded for no STEM advanced degree, '1' is encoded for some STEM advanced degree
+
+This is based on a lot of assumptions: 
+
++ Our definition of STEM
++ US degrees assumed to hold more weight than foreign degrees
+  
+## Example: Inconsistency in Number of Jobs
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/njob_discrep1.png)
+
+![](figures/njob_discrep2.png)
+
+:::
+
+## Proportion of Complete Job Progression to Date
+
+Thresholds based on `n_jobs_clean`:
+
++ 6206 job spells with 0.50 or greater job spell data availability based on encoded job titles alone
++ 3596 job spells with 0.75 or greater job spell data availability based on encoded job titles alone
++ 2961 job spells with 0.80 or greater job spell data availability based on encoded job titles alone
++ 1720 job spells with 0.90 or greater job spell data availability based on encoded job titles alone
++ 1621 job spells with 1.00 job spell data availability based on encoded job titles alone
+
+
+# Response Variable Construction
+
+## General Approach
+
+Things to consider:
+
++ How can we measure internal and external job changes?
++ How can we measure the direction and magnitude of job changes?
++ Promotions, demotions, lateral/stagnant movement?
++ How do we standardize information about jobs with so many of them?
+
+## General Approach (cont.)
+
+Internal Job Changes:
+
++ Identify common job titles, common bigrams
++ Assign point values to bigrams containing certain words
++ Translate bigram point values to job title point values
+
+External Job Changes:
+
++ Comparing company names between job $n$ and job $n+1$
++ Fuzzy matching to compare strings
++ Similarity score threshold
+
+## Bigram Point Scale
+
+Five categories:
+
++ 5 - presidents, ceos, founders
++ 4 - managers
++ 3 - mid-level staff
++ 2 - lower-level staff
++ 1 - students, interns, assistants
+
+Each job title will then take the minimum or average point value of the bigrams it contains.
+
+# Analysis
+
+## Descriptive Analysis: Internal Job Changes
+
+Using the *minimum* bigram point value for each job title, the distribution of job title 
+point values and point differences between job $n$ and job $n+1$ are as follows:
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/pvdist_min.png)
+
+![](figures/pdiffdist_min.png)
+
+:::
+
+## Descriptive Analysis: Internal Job Changes (cont.)
+
+Likewise, using the *average* bigram point value for each job title, the distribution of job title 
+point values and point differences between job $n$ and job $n+1$ are as follows:
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/pvdist_min.png)
+
+![](figures/pdiffdist_min.png)
+
+:::
+
+
+## Analysis Techniques
+
+**Goal:** Determine what factors are statistically significant when internal or external 
+job changes occur, as well as the type and frequency of movement. Statistical methods 
+would help us analyze if there exists statistically significant differences between selected 
+demographics in the sample.
+
+Possible Models of interest:
+
++ **Logistic regression:** likelihood of experiencing an internal/external job change, likelihood of ever experiencing an internal/external job change
++ **Cox Proportional Hazards Model / Survival Model:** time before a job change occurs?
+
+Additional Procedures:
+
++ Elastic Net or LASSO for model selection
++ Statistical T-testing (need to check assumptions)
+
+Methods are openly evolving work in progress.
+
+## Logistic Regression
+
+Current response variables:
+
++ Likelihood of experiencing an external job movement
++ Likelihood of experiencing a promotion
++ Likelihood of experiencing a demotion
+
+Our set of processed explanatory variables for modeling include:
+
++ `GenderNums` : '0' is encoded for male, '1' is encoded for female
++ `BA Country` : '0' is encoded for India, '1' is encoded for US
++ `Has Advanced Degree` : '0' for neither Master's nor Doctorate, '1' for either or both
++ `advanced_degree_from_US` : '0' for only received advanced degrees abroad, and '1' for any advanced degree in the US
++ `STEM BA Field` : '0' for non-STEM or unknown BA, '1' for STEM BA
++ `STEM_advanced_degree` :  '0' for only non-STEM, and '1' for any advanced degree in STEM
++ `Total years working in US`
++ `Total years studied US`
+
+Models are not performing very well or are giving errors; hopping between different packages at the moment.
+
+##  Limitations
+
++ Data collection is done via webscraping; data input will be inconsistent across different people
++ Employment history and duration may not be up to date (as of 2019)
++ Five-point scale is relatively subjective, constructed metric
++ System is not perfect!
++ Imbalances in data, namely "any external changes" variable (proving to be an issue in logistic regression)
+
+# Further Investigation
+## Further Investigation
+
++ Compare pre-COVID baseline behavior to current Indian immigrant sample post-COVID
++ Refine job title categorization / point value assignment process with LLM
+
+# Feedback / Questions?
+
 
 <!-- ## In context
 
-![Caption](./figures/image.png){width=80% .lightbox} -->
+![Caption](./figures/image.png){width=80% .lightbox} 
 
 # Data Collection
 
@@ -198,18 +395,9 @@ There are various types of modeling depending on your research questions of inte
 
 Having a clear framework in place can guide you to make decisions that drive your inquiries, from dirty data to actionable insights!
 
-![](./figures/datasci_pipeline.png){.lightbox}
+![](./figures/datasci_pipeline.png){.lightbox} -->
 
 
 ## References  
 
-+ Ratan, Simmi K. et al. [https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/](https://pmc.ncbi.nlm.nih.gov/articles/PMC6322175/)
-+ [https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​](https://towardsdatascience.com/a-beginners-guide-to-the-data-science-pipeline-a4904b2d8ad3​)
-+ Jain, Pulkit. [https://www.simplilearn.com/what-is-data-collection-article​](https://www.simplilearn.com/what-is-data-collection-article​)
-+ Duggal, Nikita. [https://www.simplilearn.com/data-collection-methods-article​](https://www.simplilearn.com/data-collection-methods-article​)
-+ [https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​](https://www.invensis.net/blog/14-key-data-cleansing-pitfalls/​)
-+ [https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/](https://hub.packtpub.com/data-cleaning-worst-part-of-data-analysis/)
-+ DevIQ, [https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science](https://www.deviq.io/insights/artificial-intelligence-vs-machine-learning-vs-data-science)
-+ [https://www.geeksforgeeks.org/machine-learning-model-evaluation/#](https://www.geeksforgeeks.org/machine-learning-model-evaluation/#)
-+ [https://www.statology.org/interpret-roc-curve/](https://www.statology.org/interpret-roc-curve/)
-+ [https://towardsdatascience.com/goodharts-law-and-the-dangers-of-metric-selection-with-a-b-testing-91b48d1c1bef/](https://towardsdatascience.com/goodharts-law-and-the-dangers-of-metric-selection-with-a-b-testing-91b48d1c1bef/)
++ Kochhar, Rakesh et al. "Majority of U.S. Workers Changing Jobs Are Seeing Real Wage Gains." 2024. [https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months](https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months)
