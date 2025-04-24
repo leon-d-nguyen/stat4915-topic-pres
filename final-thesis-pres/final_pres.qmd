@@ -1,0 +1,403 @@
+---
+title: "Climbing and Crossing Career Ladders"
+subtitle: "An Analysis on Job Mobility: STAT 4915 Final Results"
+author: "Leon Nguyen"
+format: 
+    revealjs:
+        theme: serif
+        transition: fade
+        transition-speed: fast
+        smaller: true
+        scrollable: true
+        fig-cap-location: bottom
+---
+
+
+# Overview
+<!-- Remember to render the .qmd, then open .html in live server -->
+
+## Table of Contents
+
++ Problem Description 
++ Objectives and Research Questions
++ Data Description
++ Data Preprocessing / Cleaning
++ Response Variable Construction
++ Analysis
++ Further Investigation
+
+# Problem Description 
+
+## Problem Description 
+
++ Different progressions in career trajectories can aid in understanding disparities
++ Studying job mobility in the United States is critical to understanding patterns that could be indicative of systemic behaviors
++ Pew Research study: during Great Resignation, Black and Hispanic populations were more likely to change jobs compared to White and Asian demographics
++ Younger workers also more likely to change jobs in a given month compared to older demographics (Kochhar et al., 2022)
++ Mainstream focus on how US immigration has embolstered the labor force during and post-pandemic
+
+
+# Objectives and Research Questions
+## Objectives and Research Questions
+
+Focus on a primary data source analysis to identify patterns or disparities that may exist in the labor market between different demographics within the Indian immigrant subpopulation prior to the COVID-19 pandemic, what factors may contribute to said disparities, as well as identify potential solutions to address them. 
+
+**Research Questions:**
+
++ Are there significant differences between how people move between jobs versus between companies?
++ Are there significant differences between different demographics of gender, highest education level, and U.S./Foreign Degrees?
++ Do external job changes affect how we define job to job movement? If so, how?
+
+
+# Data Description
+## Data Description
+
++ Primary dataset webscraped from LinkedIn provided by advisor, collected as of early 2019
++ Observations ($n=7,597$) consist of people with a Bachelor's degree from the U.S. or India
++ Publicly available LinkedIn profile with their career progression
++ Most data is discrete or categorical, if numerical then involves monthly increments
++ Some information is truncated or rounded by nature of the dataset
+
+## Features
+
+Roughly $70+$ features, including:
+
++ Job titles
++ Company names
++ Duration of employment 
++ Total years working in US, studying in US
++ Indicators for Master's and/or Doctorate degrees 
++ Country in which the person's degree was received
++ Field of study
++ Number of years since the most recent degree
++ Highest degree available
+
+
+# Data Preprocessing / Cleaning
+
+## General Preliminary Cleaning
+
++ Correcting typos in field of study (BA, MA, and Doctorate)
++ Consolidating fields of study into more narrow categories
++ Consolidating countries (location of degree) into US vs non-US (primarily India)
++ Typecasting
++ Data validation and consistency: e.g. highest degree earned
++ Standardize job industries into categories
+
+## Supplemental Cleaning
+
+Additional variable construction / revision:
+
++ Number of jobs (retroactively, max 10)
++ Is area of study in a STEM field? : '0' for STEM, '1' for non-STEM
++ `Has Advanced Degree` : '0' is encoded for no advanced degree, '1' is encoded for any advanced degree (Master's or Doctorate)
++ `advanced_degree_from_US` : '0' is encoded for no US advanced degree, '1' is encoded for US advanced degree
++ `STEM_advanced_degree` : '0' is encoded for no STEM advanced degree, '1' is encoded for some STEM advanced degree
+
+This is based on a lot of assumptions: 
+
++ Our definition of STEM
++ US degrees assumed to hold more weight than foreign degrees
+  
+## Example: Inconsistency in Number of Jobs
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/njob_discrep1.png)
+
+![](figures/njob_discrep2.png)
+
+:::
+
+## Proportion of Complete Job Progression to Date
+
+Thresholds based on `n_jobs_clean`:
+
++ 6206 job spells with 0.50 or greater job spell data availability based on encoded job titles alone
++ 3596 job spells with 0.75 or greater job spell data availability based on encoded job titles alone
++ 2961 job spells with 0.80 or greater job spell data availability based on encoded job titles alone
++ 1720 job spells with 0.90 or greater job spell data availability based on encoded job titles alone
++ 1621 job spells with 1.00 job spell data availability based on encoded job titles alone
+
+
+# Response Variable Construction
+
+## General Approach
+
+Things to consider:
+
++ How can we measure internal and external job changes?
++ How can we measure the direction and magnitude of job changes?
++ Promotions, demotions, lateral/stagnant movement?
++ How do we standardize information about jobs with so many of them?
+
+## General Approach (cont.)
+
+Internal Job Changes:
+
++ Identify common job titles, common bigrams
++ Assign point values to bigrams containing certain words
++ Translate bigram point values to job title point values
+
+External Job Changes:
+
++ Comparing company names between job $n$ and job $n+1$
++ Fuzzy matching to compare strings
++ Similarity score threshold
+
+## Bigram Point Scale
+
+Five categories:
+
++ 5 - presidents, ceos, founders
++ 4 - managers
++ 3 - mid-level staff
++ 2 - lower-level staff
++ 1 - students, interns, assistants
+
+Each job title will then take the minimum or average point value of the bigrams it contains.
+
+# Analysis
+
+## Descriptive Analysis: Internal Job Changes
+
+Using the *minimum* bigram point value for each job title, the distribution of job title 
+point values and point differences between job $n$ and job $n+1$ are as follows:
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/pvdist_min.png)
+
+![](figures/pdiffdist_min.png)
+
+:::
+
+## Descriptive Analysis: Internal Job Changes (cont.)
+
+Likewise, using the *average* bigram point value for each job title, the distribution of job title 
+point values and point differences between job $n$ and job $n+1$ are as follows:
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/pvdist_avg.png)
+
+![](figures/pdiffdist_avg.png)
+
+:::
+
+
+## Analysis Techniques
+
+**Goal:** Determine what factors are statistically significant when internal or external 
+job changes occur, as well as the type and frequency of movement. Statistical methods 
+would help us analyze if there exists statistically significant differences between selected 
+demographics in the sample.
+
+Possible Models of interest:
+
++ **Logistic regression:** likelihood of experiencing an internal/external job change, likelihood of ever experiencing an internal/external job change
++ **Cox Proportional Hazards Model / Survival Model:** time before a job change occurs?
+
+Additional Procedures:
+
++ Elastic Net or LASSO for model selection
++ Statistical T-testing (need to check assumptions)
+
+Methods are openly evolving work in progress.
+
+## Logistic Regression
+
+Current response variables:
+
++ Likelihood of experiencing an external job movement
++ Likelihood of experiencing a promotion
++ Likelihood of experiencing a demotion
+
+Our set of processed explanatory variables for modeling include:
+
++ `GenderNums` : '0' is encoded for male, '1' is encoded for female
++ `BA Country` : '0' is encoded for India, '1' is encoded for US
++ `Has Advanced Degree` : '0' for neither Master's nor Doctorate, '1' for either or both
++ `advanced_degree_from_US` : '0' for only received advanced degrees abroad, and '1' for any advanced degree in the US
++ `STEM BA Field` : '0' for non-STEM or unknown BA, '1' for STEM BA
++ `STEM_advanced_degree` :  '0' for only non-STEM, and '1' for any advanced degree in STEM
++ `Total years working in US`
++ `Total years studied US`
+
+Models are not performing very well or are giving errors; hopping between different packages at the moment.
+
+##  Limitations
+
++ Data collection is done via webscraping; data input will be inconsistent across different people
++ Employment history and duration may not be up to date (as of 2019)
++ Five-point scale is relatively subjective, constructed metric
++ System is not perfect!
++ Imbalances in data, namely "any external changes" variable (proving to be an issue in logistic regression)
+
+# Further Investigation
+## Further Investigation
+
++ Compare pre-COVID baseline behavior to current Indian immigrant sample post-COVID
++ Refine job title categorization / point value assignment process with LLM
+
+# Feedback / Questions?
+
+
+<!-- ## In context
+
+![Caption](./figures/image.png){width=80% .lightbox} 
+
+# Data Collection
+
+## Data Collection  
+
++ Defined as "the process of gathering and analyzing accurate data from various sources to find answers to research problems, trends and probabilities, etc., to evaluate possible outcomes" (Jain, 2024).
++ Main objective is to gather information-rich and reliable data, and analyze them to make critical business decisions (Duggal, 2024).
+    + What types of data sources?
+    + "Garbage in, garbage out" principle
+    + Do I have enough data?
+    + Multiple features
+
+## Data Sources  
+
+Pre-built data sources:
+
++ Kaggle: [https://www.kaggle.com/datasets](https://www.kaggle.com/datasets)
++ Governmental sites, CDC, Departmental sites, etc.
++ OpenData NYC
++ GitHub: [https://github.com/awesomedata/awesome-public-datasets](https://github.com/awesomedata/awesome-public-datasets)
+
+Web Scraping
+
++ e.g. Webpages with big tables, LinkedIn data
++ Takes more time, but more flexible
++ BeautifulSoup: [https://www.youtube.com/watch?v=XVv6mJpFOb0](https://www.youtube.com/watch?v=XVv6mJpFOb0)
+
+
+
+# Data Cleaning
+
+## What should be cleaned?  
+
++ Can you drop irrelevant/empty columns?
++ Are there data entries with ambiguous/invalid characters? (e.g. entries in various languages)
++ Is data typecasted correctly?
++ Are null values coded in different ways? (e.g. "null" vs "NA")
++ Can you conserve space with simpler datatypes? (e.g. encoding strings with integers?)
++ Can you standardize values? (e.g. "canada", "Canada", and "CANADA")
++ Duplications?
+
+
+## What should be cleaned? 
+
+![A sample messy dataset.](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg){.lightbox}
+
+## Data Cleaning in Python: Pandas
+
+“Pandas is a fast, powerful, flexible and easy to use open source data analysis 
+and manipulation tool.” [https://pandas.pydata.org/docs/](https://pandas.pydata.org/docs/)
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](https://th.bing.com/th/id/OIP.O7wkuQHWHFETVuJkabKzjgAAAA?rs=1&pid=ImgDetMain)
+
+![](https://th.bing.com/th/id/R.7b48cd34391cfdf9156ed79c9f80e543?rik=JDEpjaWNDdVieg&riu=http%3a%2f%2felelur.com%2fdata_images%2fmammals%2fpanda%2fpanda-04.jpg&ehk=nq%2bhcumOBKM9UDadyxmsLueEx%2fFOBmLYAX5ZfPg9QjY%3d&risl=&pid=ImgRaw&r=0)
+
+:::
+
+# Data Visualization
+
+## Types of Data Visualizations
+
+Depending on the context of your data and what insights are useful:
+
+::: {layout-ncol=2}
+
++ Scatter plot with line of best fit
++ Jittering with stripplot
++ Marginal Boxplot
++ Correlogram
++ Pairwise Plot
++ Waffle Chart
++ Pie Chart
++ Treemap
++ Bar Chart
++ [...and other types!](https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/)
+
+![Plot of NYC done with `matplotlib`, `contextily`, `seaborn`](./figures/NYCplot.png){width=80% .lightbox}
+
+:::
+
+## Tools for Data Visualization
+
+Matplotlib, Seaborn, and Plotnine are great packages for data visualization; you can create static, animated, and interactive visualizations!
+
+Geopandas is great with geographic information.
+
+::: {layout="[[1,1], [1,1]]" fig-align="center"}
+
+![](https://matplotlib.org/3.6.0/_images/sphx_glr_logos2_003_2_0x.png) 
+
+![](https://th.bing.com/th/id/R.307407b158f9dbda1d449ec4039901cc?rik=wYbKwb%2bY6hAVvw&pid=ImgRaw&r=0)
+
+![](https://www.business-science.io/assets/2020-11-12-python-and-r-visualizing-data/plotnine_logo.png)
+
+![](https://geopandas.org/en/stable/_images/geopandas_logo.png)
+
+:::
+
+
+# Data Modeling
+
+## What is the role of AI and ML in Data Science?
+
+::: {layout-ncol=2}
+
++ **Artificial Intelligence:** broad concept of developing machines simulating human thinking, reasoning and behavior.
++ **Machine Learning:** a subset of AI where computer systems learn from the environment to improve experiences and processes.
++ **Data Science:** a distinct discipline with overlap/application in the fields of AI and ML, but not a subset of either.
+
+![](./figures/AI_ML_DS.png)
+
+:::
+
+## What are models used for?
+
+There are various types of modeling depending on your research questions of interest:
+
++ **Predictive Modeling:** Using historical data to predict future outcomes.
++ **Descriptive Modeling:** Identifying patterns and relationships in data.
++ **Prescriptive Modeling:** Recommending actions based on data analysis.
++ **Clustering:** Grouping similar data points together.
++ **Classification:** Assigning data points to predefined categories.
++ **Regression:** Predicting a continuous outcome variable based on one or more predictor variables.
+
+## Data Evaluation
+
++ **Accuracy:** How often is the model correct?
++ **Precision:** When it predicts positive, how often is it correct?
++ **Recall:** When it's actually positive, how often does it predict positive?
++ **ROC Curve:** A graphical plot illustrating the diagnostic ability of a binary classifier.
++ **Cross-Validation:** Technique for assessing how the results of a statistical analysis will generalize to an independent dataset.
++ Word of caution: "When a measure becomes a target, it ceases to be a good measure"
+
+# Data Storytelling
+
+## What now?  
+
++ How to present and communicate your work
++ What does the data support?
++ Context and domain knowledge
++ What does this mean?
+
+
+## Conclusion
+
+Having a clear framework in place can guide you to make decisions that drive your inquiries, from dirty data to actionable insights!
+
+![](./figures/datasci_pipeline.png){.lightbox} -->
+
+
+## References  
+
++ Kochhar, Rakesh et al. "Majority of U.S. Workers Changing Jobs Are Seeing Real Wage Gains." 2024. [https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months](https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months)
