@@ -61,10 +61,14 @@ Focus on a primary data source analysis to identify patterns or disparities that
 + Some information is truncated or rounded by nature of the dataset
 
 ::: {layout-valign="center"}
-![](figures/descstats.png)
 ![](figures/correlationmatrix.png)
 :::
 
+## Summary Statistics
+
+::: {layout-valign="center"}
+![](figures/descstats.png)
+:::
 
 # Response Variable Construction
 
@@ -115,6 +119,18 @@ Each job title will then take the minimum or average point value of the bigrams 
     - If the score is above 85, no external job change; below 85, an external job change is recorded. 
     - Advantage: More tolerant of spelling errors or minor variations in company names. 
 
+## Condensing External Job Changes
+
+We note that the response variables for **Any External Job Change** were initially two separate 
+variables depending on the use of exact string matching versus fuzzy string matching. Because 
+the response variables were identical, they would create the same logistic regression models and 
+have the same subset of variables included in the reduced model. For clarity, we have now only one 
+response variable relating to **Any External Job Change**.
+
+::: {layout-valign="center"}
+![](figures/extjobchangedist.png)
+:::
+
 # Analysis
 
 ## Descriptive Analysis: Internal Job Changes
@@ -156,8 +172,7 @@ Possible Models of interest:
 
 + Likelihood of ever experiencing a promotion 
 + Likelihood of ever experiencing a demotion
-+ Likelihood of ever experiencing an external job change (exact string matching)
-+ Likelihood of ever experiencing an external job change (fuzzy string matching)
++ Likelihood of ever experiencing an external job change
 
 Additional procedures for variable subset selection:
 
@@ -174,8 +189,7 @@ Current response variables:
 
 + Likelihood of experiencing a promotion
 + Likelihood of experiencing a demotion
-+ Likelihood of experiencing an external job change (exact)
-+ Likelihood of experiencing an external job change (fuzzy)
++ Likelihood of experiencing an external job change 
 
 Explanatory variables for modeling include:
 
@@ -188,18 +202,14 @@ Explanatory variables for modeling include:
 + **Yrs. Working in US**
 + **Yrs. Studied in US**
 
+## Logistic Regression (cont.)
+
 Models have low predictive performance, but we are more interesting in substantive results 
 from coefficients and significance. As models are reduced, multicollinearity is less of a 
 problem. Data imbalance is an issue, but because we want to interpret coefficients and we 
 are not as concerned with prediction compared to a more holistic analysis, oversampling 
 techniques were avoided. 
 
-We note that the response variables for **Any External Job Change** were initially two separate 
-variables depending on the use of exact string matching versus fuzzy string matching. Because 
-the response variables were identical, they would create the same logistic regression models and 
-have the same subset of variables included in the reduced model. For clarity, we have now only one 
-response variable relating to **Any External Job Change**.
-<!-- TODO: cut down on wordiness? -->
 
 ## Variable Subset Selection
 
@@ -233,21 +243,13 @@ predictor variables in the model, reducing multicollinearity and improving inter
 
 ::: {layout-ncol=3}
 
-![](figures/rocfullmodel1.png)
-![](figures/lasso1.png)
-![](figures/rocredumodel1.png)
-
-![](figures/rocfullmodel2.png)
-![](figures/lasso2.png)
-![](figures/rocredumodel2.png)
-
-![](figures/rocfullmodel3.png)
-![](figures/lasso3.png)
-![](figures/rocredumodel3.png)
+![](figures/varselect1.png)
+![](figures/varselect2.png)
+![](figures/varselect3.png)
 
 :::
 
-## Results (Predictive Metrics)
+## Results 
 
 Condensing information from full and reduced models:
 
@@ -272,6 +274,8 @@ Condensing information from full and reduced models:
     +	Ever experienced demotion: full 0.601, reduced: 0.6053
     +	Any external job change: full 0.7112, reduced: 0.7108
 
+## Results (cont.)
+
 From our predictive metrics: 
 
 + The AIC values between full and reduced models are similar, with slight decreases, indicating no significant loss in model performance. 
@@ -280,38 +284,40 @@ From our predictive metrics:
 + Reducing predictor variables improved interpretability and reduced multicollinearity without significantly affecting model performance (reduction in VIF). 
 + Variable importance is generally in line with the significance of the variables; variables that contribute more to model prediction are often viewed as more significant.  
 
-## Metrics Figures
+::: {layout-ncol=3}
 
-::: {layout-valign="center"}
+![](figures/rocfullmodel1.png)
+![](figures/lasso1.png)
+![](figures/rocredumodel1.png)
+
+![](figures/rocfullmodel2.png)
+![](figures/lasso2.png)
+![](figures/rocredumodel2.png)
+
+![](figures/rocfullmodel3.png)
+![](figures/lasso3.png)
+![](figures/rocredumodel3.png)
+
 :::
 
 ## Model Summaries and Interpretations
 
-::: {layout-valign="center"}
+::: {layout-ncol=2}
 
 ![](figures/fullmodelsummary1.png)
 ![](figures/redumodelsummary1.png)
 
-:::
-
-
-
-::: {layout-valign="center"}
 
 ![](figures/fullmodelsummary2.png)
 ![](figures/redumodelsummary2.png)
 
-:::
-
-
-
-::: {layout-valign="center"}
 
 ![](figures/fullmodelsummary3.png)
 ![](figures/redumodelsummary3.png)
 
 :::
 
+## Model Summaries and Interpretations (cont.)
 
 Based on our models, we conclude the following: 
 
