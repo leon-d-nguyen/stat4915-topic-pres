@@ -17,14 +17,14 @@ format:
 <!-- Remember to render the .qmd, then open .html in live server -->
 
 ## Table of Contents
-<!-- 
+
 + Problem Description 
 + Objectives and Research Questions
 + Data Description
-+ Data Preprocessing / Cleaning
 + Response Variable Construction
 + Analysis
-+ Further Investigation -->
++ Results and Discussion
++ Further Investigation
 
 # Problem Description 
 
@@ -35,7 +35,8 @@ format:
 + Pew Research study: during Great Resignation, Black and Hispanic populations were more likely to change jobs compared to White and Asian demographics
 + Younger workers also more likely to change jobs in a given month compared to older demographics (Kochhar et al., 2022)
 + Mainstream focus on how US immigration has embolstered the labor force during and post-pandemic
-
++ The H-1B work visa is a high volume “temporary work visa” reserved for high-skilled professionals, requiring a bachelor’s degree or higher for acquisition. Shortages of people working in STEM fields has been synonymous with the shortage of “high-skilled” workers; as a result, the H-1B work visa prioritizes educational degrees in STEM fields and gives some advantages to US advanced degrees by raising the cap on visas issued (Teitelbaum, 2018).
++ One assumption is that foreign degrees are less valuable than domestic degrees for hiring and wages in the U.S. and Canadian labor markets, based on various studies (e.g. Damelang et al., 2020; Lancee and Bol, 2017; Zeng and Xie, 2004)
 
 # Objectives and Research Questions
 ## Objectives and Research Questions
@@ -55,22 +56,14 @@ Focus on a primary data source analysis to identify patterns or disparities that
 + Primary dataset webscraped from LinkedIn provided by advisor, collected as of early 2019
 + Observations ($n=7,597$) consist of people with a Bachelor's degree from the U.S. or India
 + Publicly available LinkedIn profile with their career progression
++ Roughly $70+$ features, narrowed down to 8, some of which are constructed
 + Most data is discrete or categorical, if numerical then involves monthly increments
 + Some information is truncated or rounded by nature of the dataset
 
-## Features
-
-Roughly $70+$ features, including:
-
-+ Job titles
-+ Company names
-+ Duration of employment 
-+ Total years working in US, studying in US
-+ Indicators for Master's and/or Doctorate degrees 
-+ Country in which the person's degree was received
-+ Field of study
-+ Number of years since the most recent degree
-+ Highest degree available
+::: {layout-valign="center"}
+![](figures/descstats.png)
+![](figures/correlationmatrix.png)
+:::
 
 
 # Response Variable Construction
@@ -111,8 +104,6 @@ Five categories:
 Each job title will then take the minimum or average point value of the bigrams it contains.
 
 ## External Job Changes 
-
-Exact vs Fuzzy Matching:
 
 + **Exact String Matching**:
     - Compares company names of job n and job n+1 for an exact match. 
@@ -208,6 +199,7 @@ variables depending on the use of exact string matching versus fuzzy string matc
 the response variables were identical, they would create the same logistic regression models and 
 have the same subset of variables included in the reduced model. For clarity, we have now only one 
 response variable relating to **Any External Job Change**.
+<!-- TODO: cut down on wordiness? -->
 
 ## Variable Subset Selection
 
@@ -239,11 +231,19 @@ of the number of times they were selected, i.e., Gender, US BA, Adv. Deg from US
 Has Advanced Degree. The goal of variable selection is to reduce the number of 
 predictor variables in the model, reducing multicollinearity and improving interpretability.
 
-::: {layout-valign="center"}
+::: {layout-ncol=3}
 
-![](figures/varselect1.png)
-![](figures/varselect2.png)
-![](figures/varselect3.png)
+![](figures/rocfullmodel1.png)
+![](figures/lasso1.png)
+![](figures/rocredumodel1.png)
+
+![](figures/rocfullmodel2.png)
+![](figures/lasso2.png)
+![](figures/rocredumodel2.png)
+
+![](figures/rocfullmodel3.png)
+![](figures/lasso3.png)
+![](figures/rocredumodel3.png)
 
 :::
 
@@ -272,19 +272,58 @@ Condensing information from full and reduced models:
     +	Ever experienced demotion: full 0.601, reduced: 0.6053
     +	Any external job change: full 0.7112, reduced: 0.7108
 
+From our predictive metrics: 
+
++ The AIC values between full and reduced models are similar, with slight decreases, indicating no significant loss in model performance. 
++ Pseudo-R-squared values, ROC AUC values, and misclassification errors remain consistent between full and reduced models.
++ Optimal cutoff probabilities shifted slightly towards 0.5, except for "Any External Job Change," which increased from 0.91 to 0.94.
++ Reducing predictor variables improved interpretability and reduced multicollinearity without significantly affecting model performance (reduction in VIF). 
++ Variable importance is generally in line with the significance of the variables; variables that contribute more to model prediction are often viewed as more significant.  
+
+## Metrics Figures
+
+::: {layout-valign="center"}
+:::
+
 ## Model Summaries and Interpretations
 
-::: {layout-ncol=2 layout-valign="center"}
+::: {layout-valign="center"}
 
 ![](figures/fullmodelsummary1.png)
 ![](figures/redumodelsummary1.png)
+
+:::
+
+
+
+::: {layout-valign="center"}
+
 ![](figures/fullmodelsummary2.png)
 ![](figures/redumodelsummary2.png)
+
+:::
+
+
+
+::: {layout-valign="center"}
+
 ![](figures/fullmodelsummary3.png)
 ![](figures/redumodelsummary3.png)
 
 :::
 
+
+Based on our models, we conclude the following: 
+
++ The sign of coefficients remains consistent between full and reduced models, indicating stable relationships between predictors and responses.
++ Results from both the full and reduced model reinforce the interpretation that as the **number of years working in the U.S.** increases, the likelihood of experiencing mobility (any type of movement) increases.
++ Having an **advanced degree from the U.S.** is associated with a higher likelihood of promotion, which is consistent with the assumption that having an advanced U.S. degree is better than foreign advanced degrees. 
++ However, having an **advanced degree from the U.S.** is also associated with a higher likelihood of demotion, challenging the assumption that a U.S. degree always provides a strict advantage in the labor market. 
++ The sign of the coefficient for **US BA** is negative, which indicates that having a Bachelor’s degree from India is associated with a higher likelihood of promotion, demotion, or external job change. 
++ Gender does not appear to have a significant effect on job mobility based on the models. 
++ The country where the degree was obtained significantly affects job mobility, with mixed results. 
++ Having an advanced degree *in general* does not significantly affect job mobility, but having one from the U.S. does. 
++ This may point to a different interpretation where having a U.S. degree is associated with a higher likelihood of job stability, whereas people with degrees from abroad may experience more job mobility or volatility. 
 
 ##  Limitations
 
@@ -293,6 +332,8 @@ Condensing information from full and reduced models:
 + Five-point scale is relatively subjective, constructed metric
 + System is not perfect!
 + Imbalances in data, namely "any external changes" variable (proving to be an issue in logistic regression)
++ We assume Indian origin based on provided characteristics, such as attendance of high school in India and native fluency in Hindi
++ STEM field definition is provided by U.S. Department of Homeland Security (2019) for H-1B visas
 
 # Further Investigation
 ## Further Investigation
@@ -309,4 +350,12 @@ Condensing information from full and reduced models:
 
 ## References  
 
-+ Kochhar, Rakesh et al. "Majority of U.S. Workers Changing Jobs Are Seeing Real Wage Gains." 2024. [https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months](https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months)
++ A. Damelang, S. Ebensperger and F. Stumpf (2020). "Foreign Credential Recognition and 688 Immigrants’ Chances of Being Hired for Skilled Jobs — Evidence from a Survey Experiment Among Employers." Social Forces 99.
+
++ R. Kochhar, K. Parker and R. Igielnik (2022). "Majority of U.S. Workers Changing Jobs Are Seeing Real Wage Gains." 2022. [https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months](https://www.pewresearch.org/social-trends/2022/07/28/majority-of-u-s-workers-changing-jobs-are-seeing-real-wage-gains/#roughly-one-in-five-workers-say-they-re-likely-to-look-for-a-new-job-in-the-next-six-months)
+
++ B. Lancee and T. Bol (2017). "The Transferability of Skills and Degrees: Why the Place of Education Affects Immigrant Earnings." Social Forces 96.
+
++ M. S. Teitelbaum (2018). High-Skilled Migration: Drivers and Policies, chapter 7. Oxford University Press. 
+
++ Z. Zeng and Y. Xie (2004). "Asian-Americans’ Earnings Disadvantage Reexamined: The Role of Place of Education." American Journal of Sociology 109.
