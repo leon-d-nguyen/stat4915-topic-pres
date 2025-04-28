@@ -17,14 +17,14 @@ format:
 <!-- Remember to render the .qmd, then open .html in live server -->
 
 ## Table of Contents
-
+<!-- 
 + Problem Description 
 + Objectives and Research Questions
 + Data Description
 + Data Preprocessing / Cleaning
 + Response Variable Construction
 + Analysis
-+ Further Investigation
++ Further Investigation -->
 
 # Problem Description 
 
@@ -73,53 +73,6 @@ Roughly $70+$ features, including:
 + Highest degree available
 
 
-# Data Preprocessing / Cleaning
-
-## General Preliminary Cleaning
-
-+ Correcting typos in field of study (BA, MA, and Doctorate)
-+ Consolidating fields of study into more narrow categories
-+ Consolidating countries (location of degree) into US vs non-US (primarily India)
-+ Typecasting
-+ Data validation and consistency: e.g. highest degree earned
-+ Standardize job industries into categories
-
-## Supplemental Cleaning
-
-Additional variable construction / revision:
-
-+ Number of jobs (retroactively, max 10)
-+ Is area of study in a STEM field? : '0' for STEM, '1' for non-STEM
-+ `Has Advanced Degree` : '0' is encoded for no advanced degree, '1' is encoded for any advanced degree (Master's or Doctorate)
-+ `advanced_degree_from_US` : '0' is encoded for no US advanced degree, '1' is encoded for US advanced degree
-+ `STEM_advanced_degree` : '0' is encoded for no STEM advanced degree, '1' is encoded for some STEM advanced degree
-
-This is based on a lot of assumptions: 
-
-+ Our definition of STEM
-+ US degrees assumed to hold more weight than foreign degrees
-  
-## Example: Inconsistency in Number of Jobs
-
-::: {layout-ncol=2 layout-valign="center"}
-
-![](figures/njob_discrep1.png)
-
-![](figures/njob_discrep2.png)
-
-:::
-
-## Proportion of Complete Job Progression to Date
-
-Thresholds based on `n_jobs_clean`:
-
-+ 6206 job spells with 0.50 or greater job spell data availability based on encoded job titles alone
-+ 3596 job spells with 0.75 or greater job spell data availability based on encoded job titles alone
-+ 2961 job spells with 0.80 or greater job spell data availability based on encoded job titles alone
-+ 1720 job spells with 0.90 or greater job spell data availability based on encoded job titles alone
-+ 1621 job spells with 1.00 job spell data availability based on encoded job titles alone
-
-
 # Response Variable Construction
 
 ## General Approach
@@ -157,6 +110,20 @@ Five categories:
 
 Each job title will then take the minimum or average point value of the bigrams it contains.
 
+## External Job Changes 
+
+Exact vs Fuzzy Matching:
+
++ **Exact String Matching**:
+    - Compares company names of job n and job n+1 for an exact match. 
+    - If names are identical, no external job change; otherwise, an external job change is recorded. 
+    - Limitation: Does not account for spelling errors or variations (e.g., "Google" vs. "Google Inc."). 
+
++ **Fuzzy String Matching**:
+    - Uses similarity scores (0-100) to compare company names, with a threshold of 85 for similarity. 
+    - If the score is above 85, no external job change; below 85, an external job change is recorded. 
+    - Advantage: More tolerant of spelling errors or minor variations in company names. 
+
 # Analysis
 
 ## Descriptive Analysis: Internal Job Changes
@@ -166,9 +133,9 @@ point values and point differences between job $n$ and job $n+1$ are as follows:
 
 ::: {layout-ncol=2 layout-valign="center"}
 
-![](figures/pvdist_min.png)
+![](figures/jobtitlepointvaluemin.png)
 
-![](figures/pdiffdist_min.png)
+![](figures/diffjobtitlepointvaluemin.png)
 
 :::
 
@@ -179,9 +146,9 @@ point values and point differences between job $n$ and job $n+1$ are as follows:
 
 ::: {layout-ncol=2 layout-valign="center"}
 
-![](figures/pvdist_avg.png)
+![](figures/jobtitlepointvalueavg.png)
 
-![](figures/pdiffdist_avg.png)
+![](figures/diffjobtitlepointvalueavg.png)
 
 :::
 
@@ -191,40 +158,133 @@ point values and point differences between job $n$ and job $n+1$ are as follows:
 **Goal:** Determine what factors are statistically significant when internal or external 
 job changes occur, as well as the type and frequency of movement. Statistical methods 
 would help us analyze if there exists statistically significant differences between selected 
-demographics in the sample.
+demographics in the sample. Logistic regression models are constructed to assess relationships 
+between variables and response. 
 
 Possible Models of interest:
 
-+ **Logistic regression:** likelihood of experiencing an internal/external job change, likelihood of ever experiencing an internal/external job change
-+ **Cox Proportional Hazards Model / Survival Model:** time before a job change occurs?
++ Likelihood of ever experiencing a promotion 
++ Likelihood of ever experiencing a demotion
++ Likelihood of ever experiencing an external job change (exact string matching)
++ Likelihood of ever experiencing an external job change (fuzzy string matching)
 
-Additional Procedures:
+Additional procedures for variable subset selection:
 
-+ Elastic Net or LASSO for model selection
-+ Statistical T-testing (need to check assumptions)
++ LASSO 
++ Elastic Net 
++ Stepwise Regression 
 
-Methods are openly evolving work in progress.
+Full models are fed through variable subset selection processes, and reduced models are 
+constructed based on the selected variables.
 
 ## Logistic Regression
 
 Current response variables:
 
-+ Likelihood of experiencing an external job movement
 + Likelihood of experiencing a promotion
 + Likelihood of experiencing a demotion
++ Likelihood of experiencing an external job change (exact)
++ Likelihood of experiencing an external job change (fuzzy)
 
-Our set of processed explanatory variables for modeling include:
+Explanatory variables for modeling include:
 
-+ `GenderNums` : '0' is encoded for male, '1' is encoded for female
-+ `BA Country` : '0' is encoded for India, '1' is encoded for US
-+ `Has Advanced Degree` : '0' for neither Master's nor Doctorate, '1' for either or both
-+ `advanced_degree_from_US` : '0' for only received advanced degrees abroad, and '1' for any advanced degree in the US
-+ `STEM BA Field` : '0' for non-STEM or unknown BA, '1' for STEM BA
-+ `STEM_advanced_degree` :  '0' for only non-STEM, and '1' for any advanced degree in STEM
-+ `Total years working in US`
-+ `Total years studied US`
++ **Gender** : '0' is encoded for male, '1' is encoded for female
++ **US BA** : '0' is encoded for India, '1' is encoded for US
++ **Has Advanced Degree** : '0' for neither Master's nor Doctorate, '1' for either or both
++ **Adv. Deg. from US** : '0' for only received advanced degrees abroad, and '1' for any advanced degree in the US
++ **STEM BA Field** : '0' for non-STEM or unknown BA, '1' for STEM BA
++ **STEM Adv. Deg.** :  '0' for only non-STEM, and '1' for any advanced degree in STEM
++ **Yrs. Working in US**
++ **Yrs. Studied in US**
 
-Models are not performing very well or are giving errors; hopping between different packages at the moment.
+Models have low predictive performance, but we are more interesting in substantive results 
+from coefficients and significance. As models are reduced, multicollinearity is less of a 
+problem. Data imbalance is an issue, but because we want to interpret coefficients and we 
+are not as concerned with prediction compared to a more holistic analysis, oversampling 
+techniques were avoided. 
+
+We note that the response variables for **Any External Job Change** were initially two separate 
+variables depending on the use of exact string matching versus fuzzy string matching. Because 
+the response variables were identical, they would create the same logistic regression models and 
+have the same subset of variables included in the reduced model. For clarity, we have now only one 
+response variable relating to **Any External Job Change**.
+
+## Variable Subset Selection
+
++ **LASSO**: Uses L1 regularization to shrink less significant variable coefficients to zero. 
+    - Two models are created per response variable.
+    - `lambda.min`: Minimizes prediction error using cross-validation (10 folds).
+    - `lambda.1se`: Provides a simpler, more parsimonious model within 1 standard error of `lambda.min`.
+
++ **Elastic Net**: 
+    - Combines L1 and L2 penalties to handle multicollinearity better than LASSO. 
+    - Two models are created per response variable: `lambda.min` and `lambda.1se` are used, similar to LASSO.
+    - Data is split 50/50 into training and testing sets, iterating over the `alpha` mixing parameter.
+
++ **Stepwise Regression**: 
+    - Selects variables one by one
+    - Based on AIC improvement
+    - **Forward Stepwise**: Starts with an intercept-only model, adding variables one at a time.
+    - **Backward Stepwise**: Starts with all variables, removing them one at a time.
+    - Final model is selected when AIC no longer improves.
+
+
+# Results and Discussion
+
+## Selected Variables
+
+We include the variable in a final reduced model if it was selected by at least 
+four out of the six methods. However, we include our variables of interest regardless 
+of the number of times they were selected, i.e., Gender, US BA, Adv. Deg from US, and 
+Has Advanced Degree. The goal of variable selection is to reduce the number of 
+predictor variables in the model, reducing multicollinearity and improving interpretability.
+
+::: {layout-valign="center"}
+
+![](figures/varselect1.png)
+![](figures/varselect2.png)
+![](figures/varselect3.png)
+
+:::
+
+## Results (Predictive Metrics)
+
+Condensing information from full and reduced models:
+
++	**AIC:**
+    +	Ever experienced promotion: full: 4663.2, reduced: 4659.8
+    +	Ever experienced demotion: full: 5188.2, reduced: 5186.9
+    +	Any external job change: full: 191.81, reduced: 187.92
++	**McFadden R2:** 
+    +	Ever experienced promotion: full: 0.01342832, reduced: 0.01330522
+    +	Ever experienced demotion: full: 0.0178604, reduced: 0.01696404
+    +	Any external job change: full: 0.2020811, reduced: 0.1924185
++	**Optimal cutoff:**
+    +	Ever experienced promotion: full: 0.4110361, reduced: 0.4163346
+    +	Ever experienced demotion: full: 0.5145902, reduced: 0.5107074
+    +	Any external job change: full: 0.91, reduced: 0.94
++	**Misclassification error:** (0.5 and optimal cutoff) 
+    +	Ever experienced promotion: full: (0.3143, 0.313), reduced: (0.3143, 0.3143)
+    +	Ever experienced demotion: full (0.4177, 0.4146), reduced: (0.4172, 0.4146)
+    +	Any external job change: full (0.0029, 0.0034), reduced: (0.0029, 0.0121)
++	**ROC:**
+    +	Ever experienced promotion: full: 0.5771, reduced: 0.5752
+    +	Ever experienced demotion: full 0.601, reduced: 0.6053
+    +	Any external job change: full 0.7112, reduced: 0.7108
+
+## Model Summaries and Interpretations
+
+::: {layout-ncol=2 layout-valign="center"}
+
+![](figures/fullmodelsummary1.png)
+![](figures/redumodelsummary1.png)
+![](figures/fullmodelsummary2.png)
+![](figures/redumodelsummary2.png)
+![](figures/fullmodelsummary3.png)
+![](figures/redumodelsummary3.png)
+
+:::
+
 
 ##  Limitations
 
@@ -237,165 +297,14 @@ Models are not performing very well or are giving errors; hopping between differ
 # Further Investigation
 ## Further Investigation
 
-+ Compare pre-COVID baseline behavior to current Indian immigrant sample post-COVID
-+ Refine job title categorization / point value assignment process with LLM
++ Compare pre-COVID baseline behavior to current Indian immigrant sample post-COVID 
++ Refine job title categorization / point value assignment process with LLM (i.e. general embeddings) 
+    + Assigning point values by cluster of job titles / bigrams
++ Scale the magnitude of differences between point value levels 
++ Data colllection of more quantitative variables? 
 
 # Feedback / Questions?
 
-
-<!-- ## In context
-
-![Caption](./figures/image.png){width=80% .lightbox} 
-
-# Data Collection
-
-## Data Collection  
-
-+ Defined as "the process of gathering and analyzing accurate data from various sources to find answers to research problems, trends and probabilities, etc., to evaluate possible outcomes" (Jain, 2024).
-+ Main objective is to gather information-rich and reliable data, and analyze them to make critical business decisions (Duggal, 2024).
-    + What types of data sources?
-    + "Garbage in, garbage out" principle
-    + Do I have enough data?
-    + Multiple features
-
-## Data Sources  
-
-Pre-built data sources:
-
-+ Kaggle: [https://www.kaggle.com/datasets](https://www.kaggle.com/datasets)
-+ Governmental sites, CDC, Departmental sites, etc.
-+ OpenData NYC
-+ GitHub: [https://github.com/awesomedata/awesome-public-datasets](https://github.com/awesomedata/awesome-public-datasets)
-
-Web Scraping
-
-+ e.g. Webpages with big tables, LinkedIn data
-+ Takes more time, but more flexible
-+ BeautifulSoup: [https://www.youtube.com/watch?v=XVv6mJpFOb0](https://www.youtube.com/watch?v=XVv6mJpFOb0)
-
-
-
-# Data Cleaning
-
-## What should be cleaned?  
-
-+ Can you drop irrelevant/empty columns?
-+ Are there data entries with ambiguous/invalid characters? (e.g. entries in various languages)
-+ Is data typecasted correctly?
-+ Are null values coded in different ways? (e.g. "null" vs "NA")
-+ Can you conserve space with simpler datatypes? (e.g. encoding strings with integers?)
-+ Can you standardize values? (e.g. "canada", "Canada", and "CANADA")
-+ Duplications?
-
-
-## What should be cleaned? 
-
-![A sample messy dataset.](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0BJpvWssNjhaQEAXl0nZHQ.jpeg){.lightbox}
-
-## Data Cleaning in Python: Pandas
-
-“Pandas is a fast, powerful, flexible and easy to use open source data analysis 
-and manipulation tool.” [https://pandas.pydata.org/docs/](https://pandas.pydata.org/docs/)
-
-::: {layout-ncol=2 layout-valign="center"}
-
-![](https://th.bing.com/th/id/OIP.O7wkuQHWHFETVuJkabKzjgAAAA?rs=1&pid=ImgDetMain)
-
-![](https://th.bing.com/th/id/R.7b48cd34391cfdf9156ed79c9f80e543?rik=JDEpjaWNDdVieg&riu=http%3a%2f%2felelur.com%2fdata_images%2fmammals%2fpanda%2fpanda-04.jpg&ehk=nq%2bhcumOBKM9UDadyxmsLueEx%2fFOBmLYAX5ZfPg9QjY%3d&risl=&pid=ImgRaw&r=0)
-
-:::
-
-# Data Visualization
-
-## Types of Data Visualizations
-
-Depending on the context of your data and what insights are useful:
-
-::: {layout-ncol=2}
-
-+ Scatter plot with line of best fit
-+ Jittering with stripplot
-+ Marginal Boxplot
-+ Correlogram
-+ Pairwise Plot
-+ Waffle Chart
-+ Pie Chart
-+ Treemap
-+ Bar Chart
-+ [...and other types!](https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/)
-
-![Plot of NYC done with `matplotlib`, `contextily`, `seaborn`](./figures/NYCplot.png){width=80% .lightbox}
-
-:::
-
-## Tools for Data Visualization
-
-Matplotlib, Seaborn, and Plotnine are great packages for data visualization; you can create static, animated, and interactive visualizations!
-
-Geopandas is great with geographic information.
-
-::: {layout="[[1,1], [1,1]]" fig-align="center"}
-
-![](https://matplotlib.org/3.6.0/_images/sphx_glr_logos2_003_2_0x.png) 
-
-![](https://th.bing.com/th/id/R.307407b158f9dbda1d449ec4039901cc?rik=wYbKwb%2bY6hAVvw&pid=ImgRaw&r=0)
-
-![](https://www.business-science.io/assets/2020-11-12-python-and-r-visualizing-data/plotnine_logo.png)
-
-![](https://geopandas.org/en/stable/_images/geopandas_logo.png)
-
-:::
-
-
-# Data Modeling
-
-## What is the role of AI and ML in Data Science?
-
-::: {layout-ncol=2}
-
-+ **Artificial Intelligence:** broad concept of developing machines simulating human thinking, reasoning and behavior.
-+ **Machine Learning:** a subset of AI where computer systems learn from the environment to improve experiences and processes.
-+ **Data Science:** a distinct discipline with overlap/application in the fields of AI and ML, but not a subset of either.
-
-![](./figures/AI_ML_DS.png)
-
-:::
-
-## What are models used for?
-
-There are various types of modeling depending on your research questions of interest:
-
-+ **Predictive Modeling:** Using historical data to predict future outcomes.
-+ **Descriptive Modeling:** Identifying patterns and relationships in data.
-+ **Prescriptive Modeling:** Recommending actions based on data analysis.
-+ **Clustering:** Grouping similar data points together.
-+ **Classification:** Assigning data points to predefined categories.
-+ **Regression:** Predicting a continuous outcome variable based on one or more predictor variables.
-
-## Data Evaluation
-
-+ **Accuracy:** How often is the model correct?
-+ **Precision:** When it predicts positive, how often is it correct?
-+ **Recall:** When it's actually positive, how often does it predict positive?
-+ **ROC Curve:** A graphical plot illustrating the diagnostic ability of a binary classifier.
-+ **Cross-Validation:** Technique for assessing how the results of a statistical analysis will generalize to an independent dataset.
-+ Word of caution: "When a measure becomes a target, it ceases to be a good measure"
-
-# Data Storytelling
-
-## What now?  
-
-+ How to present and communicate your work
-+ What does the data support?
-+ Context and domain knowledge
-+ What does this mean?
-
-
-## Conclusion
-
-Having a clear framework in place can guide you to make decisions that drive your inquiries, from dirty data to actionable insights!
-
-![](./figures/datasci_pipeline.png){.lightbox} -->
 
 
 ## References  
