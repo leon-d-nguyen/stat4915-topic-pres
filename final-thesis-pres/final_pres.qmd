@@ -45,8 +45,8 @@ Focus on a primary data source analysis to identify patterns or disparities that
 
 **Research Questions:**
 
-+ Are there significant differences between how people move between jobs versus between companies?
-+ Are there significant differences between different demographics of gender, highest education level, and U.S./Foreign Degrees?
++ Are there significant differences between how people move between jobs and between companies?
++ Are there significant differences in movement between different demographics of gender, highest education level, and U.S./Foreign Degrees?
 + Do external job changes affect how we define job to job movement? If so, how?
 
 
@@ -241,7 +241,7 @@ of the number of times they were selected, i.e., Gender, US BA, Adv. Deg from US
 Has Advanced Degree. The goal of variable selection is to reduce the number of 
 predictor variables in the model, reducing multicollinearity and improving interpretability.
 
-::: {layout-ncol=3}
+::: {layout-valign="center"}
 
 ![](figures/varselect1.png)
 ![](figures/varselect2.png)
@@ -305,14 +305,11 @@ From our predictive metrics:
 ::: {layout-ncol=2}
 
 ![](figures/fullmodelsummary1.png)
-![](figures/redumodelsummary1.png)
-
-
 ![](figures/fullmodelsummary2.png)
-![](figures/redumodelsummary2.png)
-
-
 ![](figures/fullmodelsummary3.png)
+
+![](figures/redumodelsummary1.png)
+![](figures/redumodelsummary2.png)
 ![](figures/redumodelsummary3.png)
 
 :::
